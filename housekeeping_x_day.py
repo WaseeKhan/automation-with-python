@@ -7,6 +7,7 @@ if not os.path.exists(req_path):
 if os.path.isfile(req_path):
    print("Please provide direvtory path")
    sys.exit(2)
-print(os.listdir(req_path))
+for each_file in os.listdir(req_path):
+   print(each_file)
 
 
