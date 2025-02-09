@@ -1,6 +1,8 @@
 #! /usr/bin/python3
-source_path = "/Users/waseem/Developer/python-lab/Hello.py"
-destination_path = "/Users/waseem/Developer/python-lab/myTest/newHello.py"
+# source_path = "/Users/waseem/Developer/python-lab/Hello.py"
+# destination_path = "/Users/waseem/Developer/python-lab/myTest/newHello.py"
+source_path = input("Enter source path with filename : ")
+destination_path = input("Enter destination path with filename : ")
 
 open_source_file = open(source_path, 'r')
 read_source_content = open_source_file.read()
