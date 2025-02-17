@@ -2,12 +2,37 @@ import subprocess
 import sys
 import os 
 import shutil
+import logging
+from datetime import datetime
+
 
 CATALINA_HOME = "/Users/waseem/Developer/servers/tomcat"
 CATALINA_SCRIPT = f"{CATALINA_HOME}/bin/catalina.sh" 
 LOGS_DIR = f"{CATALINA_HOME}/logs"
 WORK_DIR = f"{CATALINA_HOME}/work"
 TEMP_DIR = f"{CATALINA_HOME}/temp"
+APP_LOG_DIR = "logs"
+CURR_DATE = datetime.now().strftime("%Y-%m-%d")
+LOG_FILENAME = f"{APP_LOG_DIR}/TMS-{CURR_DATE}.LOG"
+
+print(APP_LOG_DIR)
+print(CURR_DATE)
+if os.path.exists(APP_LOG_DIR):
+    print(f"{APP_LOG_DIR} already Exists . . .")
+else:
+    os.mkdir(APP_LOG_DIR)
+    print(APP_LOG_DIR)
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    filemode="a",
+    filename=LOG_FILENAME,
+    format = "%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+
+)
+logging.info("---------------*****----------------")
+
 
 # For Windows system replace with 'catlina.bat' in CATLINA_SCRIPT path
 
@@ -43,6 +68,7 @@ def delete_logs():
     try:
         # Check if the logs directory exists or not
         if os.path.exists(LOGS_DIR):
+            logging.info(f"Check if the logs directory exists or not: {LOGS_DIR}")
             # Loop over the files in the logs directory and remove them
             for filename in os.listdir(LOGS_DIR):
                 file_path = os.path.join(LOGS_DIR, filename)
@@ -54,9 +80,10 @@ def delete_logs():
                         shutil.rmtree(file_path)  # Delete the directory
                 except Exception as e:
                     print(f"Failed to delete {file_path}. Reason: {e}")
-            print("Logs directory cleared successfully.")
+            print("logs directory cleared successfully.")
         else:
-            print(f"Logs directory does not exist: {LOGS_DIR}")
+            print(f"logs directory does not exist: {LOGS_DIR}")
+            print("It's okay!! Apache Tomact will create logs directroy")
     except Exception as e:
         print(f"Failed to clear logs directory: {e}")
 # End of work on logs dir
@@ -80,6 +107,7 @@ def delete_work():
             print("work directory cleared successfully.")
         else:
             print(f"work directory does not exist: {WORK_DIR}")
+            print("It's okay!! Apache Tomact will create work directroy")
     except Exception as e:
         print(f"Failed to clear work directory: {e}")
 # End of work on work dir
@@ -104,6 +132,7 @@ def delete_temp():
             print("temp directory cleared successfully.")
         else:
             print(f"temp directory does not exist: {TEMP_DIR}")
+            print("It's okay!! Apache Tomact will create temp directroy")
     except Exception as e:
         print(f"Failed to clear temp directory: {e}")
 # End of work on 'temp' dir
@@ -112,12 +141,20 @@ def usage():
     """Print usage information."""
     print("Usage: python tomcat-master-script.py [start|stop|restart]")
 
+
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         usage()
         sys.exit(1)
 
     action = sys.argv[1].lower()
+
+    logging.debug("This is a debug message.")
+    logging.info("This is an info message.")
+    logging.warning("This is a warning message.")
+    logging.error("This is an error message.")
+    logging.critical("This is a critical message.")
 
     if action == "start":
         start_tomcat()
